@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 class="animated-text animated-text-typing" speed="150">MY TITLE</h1>
+    <p class="animated-text animated-text-typing" speed="100" delay="1500">
+      Lorem ipsum dolor sit amet.
+    </p>
+  </body>
+</html>
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    color: white;
+    height: 100vh;
+    padding: 50px;
+  }
+
+  h1 {
+    font-size: 5em;
+  }
+
+  p {
+    font-size: 3em;
+  }
+
+  .animated-text span:not(.fade) {
+    opacity: 0;
+    transform: translateY(0%) rotate(0deg);
+  }
+
+  .animated-text span {
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .animated-text-typing span.fade + span:not(.fade) {
+    background-color: black;
+    color: transparent;
+    opacity: 1;
+    transition: none;
+  }
+</style>
+
+<script>
+  const animatedTexts = document.querySelectorAll(".animated-text");
+
+  function animateText(animatedText) {
+    const text = animatedText.textContent;
+    let speed = animatedText.getAttribute("speed");
+    let delay = animatedText.getAttribute("delay");
+    if (speed == null) {
+      speed == 150;
+    }
+    if (delay == null) {
+      delay = 0;
+    }
+    animatedText.innerHTML = "";
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] == " ") {
+        animatedText.innerHTML += "  ";
+      }
+      const letterSpan = document.createElement("span");
+      letterSpan.textContent = text[i];
+      animatedText.appendChild(letterSpan);
+    }
+
+    setTimeout(function () {
+      let idx = 0;
+
+      function writeChar() {
+        const span = animatedText.querySelectorAll("span")[idx];
+        span.classList.add("fade");
+        idx++;
+        if (idx == text.length) {
+          clearInterval(writeCharInteverval);
+        }
+      }
+
+      let writeCharInteverval = setInterval(writeChar, speed);
+    }, delay);
+  }
+
+  animatedTexts.forEach(animateText);
+</script>
