@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title of the document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        <span>H</span><span>E</span><span>L</span><span>L</span><span>O</span
+        ><span>!</span>
+      </h1>
+      <p>Touch me</p>
+    </div>
+    <script>
+      const title = document.querySelector("h1");
+      const letters = [...document.querySelectorAll("h1 span")];
+
+      let isAnimatingIn = false;
+
+      title.addEventListener("mouseenter", handleLetters);
+      title.addEventListener("mouseleave", handletters);
+
+      function handleLetters() {
+        //pour eviter le spam, une seule anim
+        if (isAnimatingIn) {
+          return;
+        }
+
+        isAnimatingIn = true;
+
+        const animPromise = new Promise((resolve) => {
+          animIn();
+          setTimeout(() => {
+            resolve();
+          }, 600);
+        });
+        animPromise.then(() => {
+          animOut();
+        });
+
+        function animIn() {
+          anime({
+            targets: "h1 span",
+            translateX: function () {
+              return anime.random(-100, 100);
+            },
+            translateY: function () {
+              return anime.random(-100, 100);
+            },
+            translateZ: function () {
+              return anime.random(-1000, 500);
+            },
+            rotate: function () {
+              return anime.random(-360, 360);
+            },
+            easing: "easeOutCirc",
+            duration: 500,
+          });
+        }
+
+        function animOut() {
+          anime({
+            targets: "h1 span",
+            translateX: 0,
+            translateY: 0,
+            translateZ: 0,
+            rotate: 0,
+            easing: "easeInQuad",
+            duration: 500,
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
+<style>
+  body {
+    font-family: "Playfair Display", serif;
+  }
+  .container {
+    text-align: center;
+    perspective: 1000px;
+    margin: 100px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  h1 {
+    transform-style: preserve-3d;
+    display: inline-flex;
+    letter-spacing: 10px;
+    font-size: 130px;
+  }
+  h1 span {
+    pointer-events: none;
+  }
+  p {
+    text-align: left;
+    font-size: 10px;
+    font-style: italic;
+    padding: 3px;
+  }
+</style>
